@@ -7,7 +7,7 @@ class Animal:
         self.edad = edad
 
     def descripcion(self) -> str:
-        return f"Tengo {self.edad} años"
+        return f"tengo {self.edad} años"
 # NO MODIFICAR - FIN
 
 
@@ -18,6 +18,13 @@ class Perro(Animal):
     "Soy un perro y" + método descripción del padre
     """
     # Completar
+    def __init__(self, edad: int = 0, raza: str = ""):
+        self.raza = raza
+        super().__init__(edad)
+
+    def descripcion(self):
+        return "Soy un perro y " + super().descripcion()
+
 
 
 # NO MODIFICAR - INICIO
@@ -25,7 +32,7 @@ terrier = Perro(edad=8, raza="Yorkshire Terrier")
 cachorro = Perro(edad=1)
 dogo = Perro(raza="Dogo")
 
-assert Animal(10).descripcion() == "Tengo 10 años"
+assert Animal(10).descripcion() == "tengo 10 años"
 assert terrier.descripcion() == "Soy un perro y tengo 8 años"
 assert dogo.descripcion() == "Soy un perro y tengo 0 años"
 assert cachorro.descripcion() == "Soy un perro y tengo 1 años"
@@ -39,12 +46,24 @@ from dataclasses import dataclass
 
 @dataclass
 class Animal:
-    pass # Completar
+    # Completar
+    edad: int = 0
+
+    def descripcion(self) -> str:
+        return f"tengo {self.edad} años"
 
 
 @dataclass
 class Perro(Animal):
-    pass # Completar
+    # Completar
+    raza: str = ""
+
+    def __init__(self, edad: int = 0, raza: str = ""):
+        self.raza = raza
+        super().__init__(edad)
+
+    def descripcion(self):
+        return "Soy un perro y " + super().descripcion()
 
 
 # NO MODIFICAR - INICIO
@@ -52,7 +71,7 @@ terrier = Perro(edad=8, raza="Yorkshire Terrier")
 cachorro = Perro(edad=1)
 dogo = Perro(raza="Dogo")
 
-assert Animal(10).descripcion() == "Tengo 10 años"
+assert Animal(10).descripcion() == "tengo 10 años"
 assert terrier.descripcion() == "Soy un perro y tengo 8 años"
 assert dogo.descripcion() == "Soy un perro y tengo 0 años"
 assert cachorro.descripcion() == "Soy un perro y tengo 1 años"

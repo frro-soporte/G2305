@@ -9,8 +9,20 @@ class Articulo:
         - Utilizar sólamente el constructor (__init__) y un método de
           clase (@classmethod) con una variable de clase
     """
-
     # Completar
+    _last_id = 0
+
+    def __init__(self, nombre = None):
+        if nombre is None:
+            self.nombre = ''
+        else:
+            self.nombre = nombre
+        self.id_ = Articulo.id_siguiente()
+
+    @classmethod
+    def id_siguiente(cls):
+        cls._last_id += 1
+        return cls._last_id
 
 
 # NO MODIFICAR - INICIO
