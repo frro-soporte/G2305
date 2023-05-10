@@ -9,7 +9,12 @@ Los imports deben hacerse de forma tal que funcionen con el siguiente
 comando (estando parados dentro de la carpeta practico_02):
 $PATH$/practico_02> python -m source.ejercicio_02
 """
-
+#import util as util
+import util as util
+from data import database
+from practico_02.config import test_config as test_config
+from practico_02.config.db_config import migrations as migrations
+from practico_02 import main as main
 # Completar
 
 

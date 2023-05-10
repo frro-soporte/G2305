@@ -7,11 +7,16 @@ class Animal:
         self.edad = edad
 
     def descripcion(self) -> str:
-        return f"Tengo {self.edad} años"
+        return f"tengo {self.edad} años"
 # NO MODIFICAR - FIN
 
 
 class Perro(Animal):
+    def __init__(self,edad=0, raza: str = ""):
+        super().__init__(edad)
+        self.raza = raza
+    def descripcion(self) -> str:
+        return f"Soy un perro y {super().descripcion()}"
     """Escribir un constructor que añada una variable de instancia llamada raza,
     de tipo string y que tenga como valor por defecto "". Adicionalmente se debe
     sobrecargar el método descripción para que devuelva:
@@ -25,7 +30,7 @@ terrier = Perro(edad=8, raza="Yorkshire Terrier")
 cachorro = Perro(edad=1)
 dogo = Perro(raza="Dogo")
 
-assert Animal(10).descripcion() == "Tengo 10 años"
+assert Animal(10).descripcion() == "tengo 10 años"
 assert terrier.descripcion() == "Soy un perro y tengo 8 años"
 assert dogo.descripcion() == "Soy un perro y tengo 0 años"
 assert cachorro.descripcion() == "Soy un perro y tengo 1 años"
@@ -39,11 +44,17 @@ from dataclasses import dataclass
 
 @dataclass
 class Animal:
+    edad: int=0
+    def descripcion(self) -> str:
+        return f"tengo {self.edad} años"
     pass # Completar
 
 
 @dataclass
 class Perro(Animal):
+    raza: str=""
+    def descripcion(self) -> str:
+        return f"Soy un perro y {super().descripcion()}"
     pass # Completar
 
 
@@ -52,7 +63,7 @@ terrier = Perro(edad=8, raza="Yorkshire Terrier")
 cachorro = Perro(edad=1)
 dogo = Perro(raza="Dogo")
 
-assert Animal(10).descripcion() == "Tengo 10 años"
+assert Animal(10).descripcion() == "tengo 10 años"
 assert terrier.descripcion() == "Soy un perro y tengo 8 años"
 assert dogo.descripcion() == "Soy un perro y tengo 0 años"
 assert cachorro.descripcion() == "Soy un perro y tengo 1 años"

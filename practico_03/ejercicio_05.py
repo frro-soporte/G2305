@@ -10,6 +10,17 @@ class Auto:
     Restricción: Usar Properties
     
     Referencia: https://docs.python.org/3/library/functions.html#property"""
+    def __init__(self, nombre, precio):
+        self.nombre = nombre.capitalize()
+        self.precio = round(precio,2)
+
+    @property
+    def precio(self):
+        return self._precio
+
+    @precio.setter
+    def precio(self, nuevo_precio):
+        self._precio = round(nuevo_precio,2)
 
     # Completar
 
@@ -55,4 +66,4 @@ try:
     assert False
 except AttributeError:
     assert True
-# NO MODIFICAR - FIN
+# NO MODIFICAR - FIN"
