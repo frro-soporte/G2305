@@ -186,3 +186,63 @@ assert Animal(10).descripcion() == "Tengo 10 años"
 assert terrier.descripcion() == "Soy un perro y tengo 8 años"
 assert dogo.descripcion() == "Soy un perro y tengo 0 años"
 assert cachorro.descripcion() == "Soy un perro y tengo 1 años"
+
+################################################################################
+""" EJ 5"""
+"""La clase auto tiene dos propiedades, precio y marca. La marca se define
+  obligatoriamente al construir la clase y siempre que se devuelve, se 
+  devuelve con la primer letra en mayúscula y no se puede modificar. El precio
+  puede modificarse pero cuando se muestra, se redondea a 2 decimales"""
+
+
+class Auto:
+    def __init__(self, marca: str, precio: float):
+        self._marca = marca
+        self._precio = precio
+
+    @property
+    def marca(self):
+        return self._marca
+    @property
+    def precio(self):
+        return round(self._precio,2)
+    @precio.setter
+    def precio(self,valor: float):
+        self._precio = valor
+
+auto = Auto("Ford", 12_875.456)
+
+assert auto.marca == "Ford"
+assert auto.precio == 12_875.46
+auto.precio = 13_874.349
+assert auto.precio == 13_874.35
+
+try:
+    auto.marca = "Chevrolet"
+    assert False
+except AttributeError:
+     assert True
+
+##################################################################
+""" Reescribir con dataclasses"""
+
+@dataclass
+class Auto:
+    marca: str
+    precio: float
+
+    def __post_init__(self):
+        self.marca = self.marca.capitalize()
+
+    @property
+    def marca(self):
+        return self.marca
+
+    @property
+    def precio(self):
+        return round(self.precio, 2)
+
+    @precio.setter
+    def precio(self, valor: float):
+        self.precio = valor
+
