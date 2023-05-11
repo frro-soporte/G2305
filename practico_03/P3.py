@@ -1,7 +1,7 @@
+from __future__ import  annotations
 from typing import Optional
 from dataclasses import dataclass
-
-
+from typing import List
 """ Práctica 3"""
 
 """Constructor, Variables de instancia y métodos de instacia
@@ -228,21 +228,108 @@ except AttributeError:
 
 @dataclass
 class Auto:
-    marca: str
-    precio: float
+    _nombre: str
+    _precio: float
 
     def __post_init__(self):
-        self.marca = self.marca.capitalize()
+        self._nombre = self._nombre.capitalize()
 
     @property
-    def marca(self):
-        return self.marca
+    def nombre(self):
+        return self._nombre
 
     @property
     def precio(self):
-        return round(self.precio, 2)
+        return round(self._precio, 2)
 
     @precio.setter
     def precio(self, valor: float):
-        self.precio = valor
+        self._precio = valor
 
+auto = Auto("Ford", 12_875.456)
+
+assert auto.nombre == "Ford"
+assert auto.precio == 12_875.46
+auto.precio = 13_874.349
+assert auto.precio == 13_874.35
+
+try:
+    auto.nombre = "Chevrolet"
+    assert False
+except AttributeError:
+    assert True
+
+####################################################################
+
+""" EJ 6"""
+"""Agregar los métodos que sean necesarios para que los test funcionen.
+    Hint: los métodos necesarios son todos magic methods
+    Referencia: https://docs.python.org/3/reference/datamodel.html#basic-customization"""
+
+#from __future__ import annotations
+#from typing import List
+class Article:
+    def __init__(self, name: str) -> None:
+        self.name = name
+
+    def __str__(self) -> str:
+        return self.name
+    def __repr__(self):
+        return f"Article('{self.name}')"
+
+class ShoppingCart:
+
+    def __init__(self, articles: List[Article] = None) -> None:
+        if articles is None:
+            self.articles = []
+        else:
+            self.articles = articles
+
+    def add(self, article: Article) -> ShoppingCart:
+        self.articles.append(article)
+        return self
+
+    def remove(self, remove_article: Article) -> ShoppingCart:
+        new_articles = []
+
+        for article in self.articles:
+            if article != remove_article:
+                new_articles.append(article)
+
+        self.articles = new_articles
+
+        return self
+
+    def __str__(self):
+        return str([str(article) for article in self.articles])
+
+    def __repr__(self):
+        return f"ShoppingCart({self.articles})"
+
+    def __eq__(self, other):
+        return set(self.articles) == set(other.articles)
+
+
+manzana = Article("Manzana")
+pera = Article("Pera")
+tv = Article("Television")
+
+# Test de conversión a String
+assert str(ShoppingCart().add(manzana).add(pera)) == "['Manzana', 'Pera']"
+
+# Test de reproducibilidad
+carrito = ShoppingCart().add(manzana).add(pera)
+assert carrito == eval(repr(carrito))
+
+# Test de igualdad
+assert ShoppingCart().add(manzana) == ShoppingCart().add(manzana)
+
+# Test de remover objeto
+assert ShoppingCart().add(tv).add(pera).remove(tv) == ShoppingCart().add(pera)
+
+# Test de igualdad con distinto orden
+assert ShoppingCart().add(tv).add(pera) == ShoppingCart().add(pera).add(tv)
+
+# Test de suma
+combinado = ShoppingCart().add(manzana) + ShoppingCart().add(pera)
+assert combinado == ShoppingCart().add(manzana).add(pera)
