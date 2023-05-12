@@ -264,7 +264,7 @@ except AttributeError:
 """ EJ 6"""
 """Agregar los métodos que sean necesarios para que los test funcionen.
     Hint: los métodos necesarios son todos magic methods
-    Referencia: https://docs.python.org/3/reference/datamodel.html#basic-customization"""
+    Referencia: https://docs.python.org/3/reference/datamodel.html#basic-customization """
 
 #from __future__ import annotations
 #from typing import List
@@ -274,6 +274,12 @@ class Article:
 
     def __str__(self) -> str:
         return self.name
+
+    def __eq__(self, other: Article) -> bool:
+        return self.name==other.name
+
+    def __hash__(self)->int:
+        return hash(self.name)
     def __repr__(self):
         return f"Article('{self.name}')"
 
@@ -304,11 +310,14 @@ class ShoppingCart:
         return str([str(article) for article in self.articles])
 
     def __repr__(self):
-        return f"ShoppingCart({self.articles})"
+        return f"ShoppingCart({[art for art in self.articles]})"
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return set(self.articles) == set(other.articles)
 
+    def __add__(self, other: ShoppingCart) -> ShoppingCart:
+        new_articles = self.articles + other.articles
+        return ShoppingCart(new_articles)
 
 manzana = Article("Manzana")
 pera = Article("Pera")
@@ -333,3 +342,58 @@ assert ShoppingCart().add(tv).add(pera) == ShoppingCart().add(pera).add(tv)
 # Test de suma
 combinado = ShoppingCart().add(manzana) + ShoppingCart().add(pera)
 assert combinado == ShoppingCart().add(manzana).add(pera)
+
+
+
+#####################################################################
+""" EJ 7"""
+"""Deepcopy y Listas de Objetos"""
+
+# NO MODIFICAR - INICIO
+@dataclass
+class Articulo:
+    nombre: str
+    precio: float
+
+
+# NO MODIFICAR - FIN
+
+
+from copy import deepcopy
+
+
+def actualizar_precio(articulos: List[Articulo], porcentaje: float) -> List[Articulo]:
+    """Toma una lista de articulos y un porcentaje, al precio de cada articulo
+    le suma un porcentaje. Devuelve una lista con los precios actualizados.
+
+    Restricción: NO se debe modificar la clase ni los tests.
+    Hint: Usar deepcopy (https://docs.python.org/3/library/copy.html#copy.deepcopy)
+    """
+
+
+    articulos_a=deepcopy(articulos)
+    for art in articulos_a:
+        art.precio =art.precio* (1 + porcentaje / 100)
+
+    return articulos_a
+
+
+# NO MODIFICAR - INICIO
+nombres = ["sabana", "parlante", "computadora", "tasa", "botella", "celular"]
+precios = [10.25, 5.258, 350.159, 25.99, 18.759, 215.231]
+
+articulos = [Articulo(nombre, precio) for nombre, precio in zip(nombres, precios)]
+porcentaje_aumento = 10
+
+articulos_actualizados = actualizar_precio(articulos, porcentaje_aumento)
+precios_desactualizados = [articulo.precio for articulo in articulos]
+precios_actualizados = [articulo.precio for articulo in articulos_actualizados]
+
+# Test Lista vacia
+assert precios_actualizados
+
+# Test de precios
+for precio_viejo, precio_nuevo in zip(precios_desactualizados, precios_actualizados):
+    assert precio_nuevo == precio_viejo * (1 + porcentaje_aumento / 100)
+
+# NO MODIFICAR - FIN
