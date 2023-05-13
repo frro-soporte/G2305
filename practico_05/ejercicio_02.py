@@ -3,56 +3,103 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from ejercicio_01 import Base, Socio
-
 from typing import List, Optional
+from sqlalchemy.orm.exc import UnmappedInstanceError
 
 class DatosSocio():
 
     def __init__(self):
-        pass # Completar
+        self.__engine = create_engine("sqlite:///prueba.db")
+        self.__Session = sessionmaker(bind=self.__engine)
+        Base.metadata.create_all(bind = self.__engine)
 
     def buscar(self, id_socio: int) -> Optional[Socio]:
         """Devuelve la instancia del socio, dado su id. Devuelve None si no 
         encuentra nada.
         """
-        pass # Completar
+        sesion = self.__Session()
+        socio = sesion.query(Socio).filter(Socio.id == id_socio).first()
+        sesion.close()
+        return socio
 
     def buscar_dni(self, dni_socio: int) -> Optional[Socio]:
         """Devuelve la instancia del socio, dado su dni. Devuelve None si no 
         encuentra nada.
         """
-        pass # Completar
-        
+        sesion = self.__Session()
+        socio = sesion.query(Socio).filter(Socio.dni == dni_socio).first()
+        sesion.close()
+        return socio
+
     def todos(self) -> List[Socio]:
         """Devuelve listado de todos los socios en la base de datos."""
-        pass # Completar
+        sesion = self.__Session()
+        socios = sesion.query(Socio).all()
+        sesion.close()
+        return socios
 
     def borrar_todos(self) -> bool:
         """Borra todos los socios de la base de datos. Devuelve True si el 
         borrado fue exitoso.
         """
-        pass # Completar
+        sesion = self.__Session()
+        sesion.query(Socio).delete()
+        sesion.commit()
+        borrados = sesion.deleted
+        sesion.close()
+
+        return not bool(borrados)
 
     def alta(self, socio: Socio) -> Socio:
         """Agrega un nuevo socio a la tabla y lo devuelve"""
-        pass # Completar
+
+        sesion = self.__Session(expire_on_commit=False)
+        sesion.add(socio)
+        sesion.commit()
+        sesion.expunge(socio)
+        sesion.close()
+
+
+
+        return socio
 
     def baja(self, id_socio: int) -> bool:
         """Borra el socio especificado por el id. Devuelve True si el borrado 
         fue exitoso.
         """
-        pass # Completar
+        sesion = self.__Session()
+        socio = sesion.query(Socio).filter(Socio.id == id_socio).first()
+        if socio:
+            sesion.delete(socio)
+            sesion.commit()
+        else:
+            raise UnmappedInstanceError
+        sesion.close()
+        return bool(socio)
+
+
 
     def modificacion(self, socio: Socio) -> Socio:
         """Guarda un socio con sus datos modificados. Devuelve el Socio 
         modificado.
         """
-        pass # Completar
-    
+        sesion = self.__Session()
+        socio_viejo = sesion.query(Socio).filter(Socio.id == socio.id).first()
+        if socio_viejo:
+            socio_viejo.asignar(socio)
+            sesion.commit()
+        else:
+            raise UnmappedInstanceError
+        sesion.close()
+        return socio
+
+
     def contarSocios(self) -> int:
         """Devuelve el total de socios que existen en la tabla"""
-        pass # Completar
-
+        sesion = self.__Session()
+        cant_personas = sesion.query(Socio).count()
+        sesion.close()
+        return cant_personas
 
 
 # NO MODIFICAR - INICIO

@@ -15,7 +15,7 @@ def buscar_persona(id_persona):
     conn: sqlite3.Connection = sqlite3.connect("data.db")
     curs: sqlite3.Cursor = conn.cursor()
     curs.execute("SELECT * FROM Persona WHERE idPersona = (?)", (id_persona, ))
-    persona:() = curs.fetchone()
+    persona:() = curs.fet
     print(persona)
     conn.commit()
     conn.close()
