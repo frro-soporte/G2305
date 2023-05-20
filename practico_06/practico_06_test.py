@@ -15,7 +15,6 @@ class TestsNegocio(unittest.TestCase):
     def tearDown(self):
         super(TestsNegocio, self).tearDown()
         self.ns.datos.borrar_todos()
-
     def test_alta(self):
         # pre-condiciones: no hay socios registrados
         self.assertEqual(len(self.ns.todos()), 0)
