@@ -14,12 +14,19 @@ def buscar_persona(id_persona):
     devuelve False."""
     conn: sqlite3.Connection = sqlite3.connect("data.db")
     curs: sqlite3.Cursor = conn.cursor()
+
     curs.execute("SELECT * FROM Persona WHERE idPersona = (?)", (id_persona, ))
-    persona:() = curs.fet
-    print(persona)
+    persona:() = curs.fetchone()
     conn.commit()
     conn.close()
-    return persona if persona else False
+    if persona:
+        personaList = list(persona)
+        personaList[2]=datetime.datetime.strptime(persona[2],"%Y-%m-%d %H:%M:%S")
+        persona = tuple(personaList)
+        return persona
+    else:
+        return False
+
 
 
 
