@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d9efce2a-866c-46d4-bd1e-8ad4a72877ad" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/practico_04/asd.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/practico_02/source/ejercicio_02.py" beforeDir="false" afterPath="$PROJECT_DIR$/practico_02/source/ejercicio_02.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/practico_04/Ejercicio1.db" beforeDir="false" afterPath="$PROJECT_DIR$/practico_04/Ejercicio1.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +34,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/Ale/Desktop/Soporte/G2305/practico_04/ejercicio_08.py",
+    "last_opened_file_path": "C:/Users/Ale/Desktop/Soporte/G2305",
     "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
@@ -47,11 +48,11 @@
       </envs>
       <option name="SDK_HOME" value="C:\Users\Ale\Desktop\GitR\Soporte\MI PRÁCTICA\venv\Scripts\python.exe" />
       <option name="SDK_NAME" value="Python 3.8 (MI PRÁCTICA)" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/practico_04" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/.." />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/practico_04/ejercicio_08.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
