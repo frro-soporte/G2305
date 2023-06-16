@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">dni</th>
+              <th scope="col">nombre</th>
+              <th scope="col">apellido</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for socio in socios %}
+                <tr>
+                    <th scope="row">{{ socio.id }}</th>
+                    <td>{{ socio.dni }}</td>
+                    <td>{{ socio.nombre }}</td>
+                    <td>{{ socio.apellido }}</td>
+                    <td>
+                        <a href="{{url_for('modificacion', id_socio = socio.id)}}"><button class="btn btn-outline-primary">Modificar</button></a>
+                        <a href="{{url_for('baja', id_socio = socio.id)}}"><button class="btn btn-outline-danger">Borrar</button></a>
+                    </td>
+                </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+{% endblock content %}

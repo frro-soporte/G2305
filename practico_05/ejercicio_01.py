@@ -23,10 +23,11 @@ class Socio(Base):
 
 
 
-    def asignar(self, otro):
+    def modificar(self, otro):
         if isinstance(otro, Socio):
             atributos = list(self.__dict__.keys())
             atributos.remove('_sa_instance_state')
+            atributos.remove('dni')
             for attr in atributos:
                 setattr(self,attr,getattr(otro,attr))
 

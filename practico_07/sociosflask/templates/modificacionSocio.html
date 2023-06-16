@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+    <form method="POST" action="">
+      {{form.hidden_tag()}}
+       <legend>
+           Modificacion socio   '{{socio.dni}}'
+       </legend>
+      <div class="mb-3">
+        {{form.nombre.label(class="form-label")}}
+        {{form.nombre(class="form-control")}}
+      </div>
+      <div class="mb-3">
+        {{form.apellido.label(class="form-label")}}
+        {{form.apellido(class="form-control")}}
+      </div>
+      <div >
+        {{form.submit(class= "btn btn-info")}}
+
+      </div>
+    </form>
+
+{% endblock  %}

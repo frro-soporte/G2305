@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+    <form method="POST" action="">
+      {{form.hidden_tag()}}
+       <legend>
+           Agregar socio
+       </legend>
+      <div class="mb-3">
+         {{form.dni.label(class = "form-label")}}
+         {{form.dni(class="form-control")}}
+      </div>
+      <div class="mb-3">
+        {{form.nombre.label(class="form-label")}}
+        {{form.nombre(class="form-control")}}
+      </div>
+      <div class="mb-3">
+        {{form.apellido.label(class="form-label")}}
+        {{form.apellido(class="form-control")}}
+      </div>
+      <div >
+        {{form.submit(class= "btn btn-success")}}
+
+      </div>
+    </form>
+
+{% endblock  %}

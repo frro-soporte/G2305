@@ -33,7 +33,7 @@ class NegocioSocio(object):
         :rtype: Socio
         """
 
-        return DatosSocio.buscar(id_socio)
+        return self.datos.buscar(id_socio)
 
     def buscar_dni(self, dni_socio):
         """
@@ -96,7 +96,9 @@ class NegocioSocio(object):
         :return: bool
         """
         socio = self.datos.buscar_dni(socio.dni)
-        return not bool(socio)
+        if socio:
+            raise DniRepetido
+        return True
 
     def regla_2(self, socio):
         """
@@ -117,7 +119,7 @@ class NegocioSocio(object):
         :raise: MaximoAlcanzado
         :return: bool
         """
-        cantidad_socios = self.datos.contarSocios()
+        cantidad_socios = self.datos.contarSocios() + 1
         if cantidad_socios > self.MAX_SOCIOS:
             raise MaximoAlcanzado
         return True
