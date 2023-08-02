@@ -5,37 +5,33 @@ from sqlalchemy.orm import sessionmaker
 from ejercicio_01 import Base, Socio
 
 from typing import List, Optional
+from sqlalchemy.orm.exc import UnmappedInstanceError
 
 class DatosSocio():
 
     def __init__(self):
-        self.__engine = create_engine("sqlite:///practica5.db")
+        self.__engine = create_engine("sqlite:///prueba.db")
         self.__Session = sessionmaker(bind=self.__engine)
         Base.metadata.create_all(bind=self.__engine)
 
-
     def buscar(self, id_socio: int) -> Optional[Socio]:
-        """Devuelve la instancia del socio, dado su id. Devuelve None si no 
-        encuentra nada.
-        """
         session = self.__Session()
         socio = session.query(Socio).filter(Socio.id == id_socio).first()
         session.close()
-        return socio
-
+        return socio 
     def buscar_dni(self, dni_socio: int) -> Optional[Socio]:
         """Devuelve la instancia del socio, dado su dni. Devuelve None si no 
         encuentra nada.
         """
         session = self.__Session()
-        socio = session.query(Socio).filter(Socio.dni == dni_socio).first()
+        socio = session.query(Socio).filter(Socio.dni == dni_socio)
         session.close()
-        return socio
+        return  socio
         
     def todos(self) -> List[Socio]:
         """Devuelve listado de todos los socios en la base de datos."""
         session = self.__Session()
-        socios = session.query(Socio).All()
+        socios = session.query(Socio).all()
         session.close()
         return socios
 
@@ -44,63 +40,61 @@ class DatosSocio():
         borrado fue exitoso.
         """
         session = self.__Session()
+        session.query(Socio).delete()
+        session.commit()
+        borrados = session.deleted
+        session.close()
 
-        try:
-            session.query(Socio).delete()
-            session.commit()
-            return True
-        except:
-            session.rollback()
-            return False
-        finally:
-            session.close()
-
+        return not bool(borrados)
 
     def alta(self, socio: Socio) -> Socio:
         """Agrega un nuevo socio a la tabla y lo devuelve"""
-        sesion = self.__Session(expire_on_commit=False)
-        sesion.add(socio)
-        sesion.commit()
-        sesion.expunge(socio)
-        sesion.close()
-
+        session = self.__Session(expire_on_commit=False)
+        session.add(socio)
+        session.commit()
+        session.expunge(socio)
+        session.close()
         return socio
 
-
-def baja(self, id_socio: int) -> bool:
+    def baja(self, id_socio: int) -> bool:
         """Borra el socio especificado por el id. Devuelve True si el borrado 
         fue exitoso.
         """
         session = self.__Session()
         socio = session.query(Socio).filter(Socio.id == id_socio).first()
+
         if socio:
             session.delete(socio)
             session.commit()
-            return True
         else:
-            return True
+            raise UnmappedInstanceError  #Operación que no es válida en una instancia no mapeada, es decir, una instancia que no está asociada a una tabla de la base de datos.
         session.close()
+
+        return bool(socio)
+
+
 
     def modificacion(self, socio: Socio) -> Socio:
         """Guarda un socio con sus datos modificados. Devuelve el Socio 
         modificado.
         """
         session = self.__Session()
-        soc_viejo = session.query(Socio).filter(Socio.id == socio.id).first()
-        if soc_viejo:
-            soc_viejo.modificar(socio)
+        socio_out = session.query(Socio).filter(Socio.id == socio.id).first()
+        if socio_out:
+            socio_out.asignar(socio)
             session.commit()
         else:
-
+            raise UnmappedInstanceError
         session.close()
         return socio
     
     def contarSocios(self) -> int:
         """Devuelve el total de socios que existen en la tabla"""
         session = self.__Session()
-        cant = session.query(Socio).count()
+        cantP = session.query(Socio).count()
         session.close()
-        return cant
+        return cantP
+
 
 
 
