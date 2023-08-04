@@ -35,6 +35,7 @@ class Socio(Base):
         if isinstance(otro, Socio):
             equivale = True
             atributos = list(self.__dict__.keys())
+            #print(atributos)
             atributos.remove('_sa_instance_state')
             for attr in atributos:
                 equivale = equivale and getattr(self, attr) == getattr(otro, attr)

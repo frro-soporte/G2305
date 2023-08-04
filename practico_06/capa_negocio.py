@@ -40,14 +40,15 @@ class NegocioSocio(object):
         Devuelve None si no encuentra nada.
         :rtype: Socio
         """
-        return
+        return self.datos.buscar_dni(dni_socio)
 
     def todos(self):
         """
         Devuelve listado de todos los socios.
         :rtype: list
         """
-        return []
+
+        return self.datos.todos()
 
     def alta(self, socio):
         """
@@ -58,6 +59,9 @@ class NegocioSocio(object):
         :type socio: Socio
         :rtype: bool
         """
+        if  self.regla_1(socio) and   self.regla_2(socio) and  self.regla_3():
+            socio_insertado = self.datos.alta(socio)
+            return bool(socio_insertado.id)
         return False
 
     def baja(self, id_socio):
@@ -66,7 +70,7 @@ class NegocioSocio(object):
         Devuelve True si el borrado fue exitoso.
         :rtype: bool
         """
-        return False
+        return self.datos.baja(id_socio)
 
     def modificacion(self, socio):
         """
@@ -77,6 +81,10 @@ class NegocioSocio(object):
         :type socio: Socio
         :rtype: bool
         """
+        if self.regla_2(socio):
+            self.datos.modificacion(socio)
+        else:
+            raise LongitudInvalida
         return False
 
     def regla_1(self, socio):
@@ -86,7 +94,11 @@ class NegocioSocio(object):
         :raise: DniRepetido
         :return: bool
         """
-        return False
+        socio = self.datos.buscar_dni(socio.dni)
+        if socio is not None:
+            # Si ya existe un socio con el mismo DNI, lanzamos una excepción
+            raise DniRepetido("El DNI ya está en uso.")
+        return not bool(socio)
 
     def regla_2(self, socio):
         """
@@ -95,7 +107,14 @@ class NegocioSocio(object):
         :raise: LongitudInvalida
         :return: bool
         """
-        return False
+        nombre_valido = self.MIN_CARACTERES <= len(socio.nombre) <= self.MAX_CARACTERES
+        apellido_valido = self.MIN_CARACTERES <= len(socio.apellido) <= self.MAX_CARACTERES
+
+        if not nombre_valido or not apellido_valido:
+            # Si no cumplen con la longitud válida, lanzamos una excepción
+            raise LongitudInvalida("El nombre y el apellido deben tener entre 3 y 15 caracteres.")
+
+        return True
 
     def regla_3(self):
         """
@@ -103,4 +122,9 @@ class NegocioSocio(object):
         :raise: MaximoAlcanzado
         :return: bool
         """
-        return False
+        # Validar que no se está excediendo la cantidad máxima de socios
+        cant_socios = self.datos.contarSocios()
+        if cant_socios >= self.MAX_SOCIOS:
+            # Si se alcanzó el límite máximo de socios, lanzamos una excepción
+            raise MaximoAlcanzado("Se ha alcanzado el límite máximo de socios.")
+        return True

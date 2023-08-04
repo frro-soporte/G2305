@@ -1,7 +1,7 @@
 """Base de Datos SQL - Alta"""
 
 import datetime
-from practico_04.ejercicio_01 import reset_tabla
+from G2305.practico_04.ejercicio_01 import reset_tabla
 import sqlite3
 
 def agregar_persona(nombre, nacimiento, dni, altura):

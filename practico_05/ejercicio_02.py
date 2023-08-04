@@ -2,7 +2,7 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ejercicio_01 import Base, Socio
+from practico_05.ejercicio_01 import Base, Socio
 
 from typing import List, Optional
 from sqlalchemy.orm.exc import UnmappedInstanceError
@@ -24,7 +24,7 @@ class DatosSocio():
         encuentra nada.
         """
         session = self.__Session()
-        socio = session.query(Socio).filter(Socio.dni == dni_socio)
+        socio = session.query(Socio).filter(Socio.dni == dni_socio).first()
         session.close()
         return  socio
         
