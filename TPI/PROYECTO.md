@@ -1,4 +1,4 @@
-# NOMBRE_DEL_PROYECTO
+# Sistema de votación
 
 Este es un archivo que debe completarse con los datos utilizados en el TPI. Este archivo puede modificarse en el tiempo, no obstante siempre debe mantenerse en un estado consistente con el desarrollo.
 
@@ -6,7 +6,7 @@ Este es un archivo que debe completarse con los datos utilizados en el TPI. Este
 
 ## Descripción del proyecto
 
-Definir cúal es el alcance de este proyecto y los principales objetivos que debe cumplir.
+La idea es un sistema de votacion, donde los usuarios ingresan a la aplicacion validando su identidad con ....., una vez validada la identidad, si la persona no votó, le apareceran los candidatos donde seleccionara un candidato para cada cargo. Una vez confirmado, se registra que esa persona ya votó y se asignan los votos a los respectivos candidatos. Se veran mas adelante detalles sobre validacion de identidad y estadisticas en tiempo real.
 
 ## Modelo de Dominio
 
