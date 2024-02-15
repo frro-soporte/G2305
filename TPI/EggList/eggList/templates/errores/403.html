@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="alert alert-danger ms-2 d-flex flex-column flex-md-row align-items-center" role="alert">
+    <img src="{{url_for('static', filename = 'errores/403.png')}}" class="error-img me-2">
+    <div>
+      <h1>No esta autorizado a acceder a esta seccion</h1>
+      <p>No tiene los permisos para acceder a la siguiente pagina. <a href="{{url_for('main.home')}}">Ir al home</a></p>
+    </div>
+  </div>
+
+{% endblock %}

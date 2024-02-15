@@ -1,0 +1,228 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+    {% if current_user.is_authenticated %}
+
+    <article>
+
+        <h1 class="mb-4">Home</h1>
+        {% if current_user.cod_postal %}
+            <div class="alert alert-secondary d-flex align-items-center" role="alert">
+              <box-icon size="md" name='current-location' ></box-icon>
+              <div>
+                  <p>Su ubicacion actual es&#160;<b>{{current_user.ciudad.nombre}}, {{current_user.ciudad.provincia.nombre}}</b></p>
+                  <div class="map-container mb-2">
+                    {{map_body | safe}}
+                  </div>
+                  <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#ubicacionModal">Cambiar Ubicacion
+                    </button>
+
+              </div>
+            </div>
+
+
+
+        {% endif %}
+        <div class="modal fade" id="ubicacionModal" tabindex="-1" aria-labelledby="ubicacionModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ubicacionModalLabel">Seleccione su ubicacion</h1>
+                {% if current_user.cod_postal %}
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                {% endif %}
+              </div>
+              <div class="modal-body">
+                <form id="ubicacion-form" method="POST"  action="">
+                    <div class="mb-2">
+                        <p class="form-control-label">Provincia</p>
+                        <select class="form-select" name="Provincia" id="provincia-select">
+                            {% for prov in provincias %}
+                                <option value="{{prov.id}}" {% if current_user.cod_postal and current_user.ciudad.id_provincia == prov.id%}selected {% endif %}>{{prov.nombre}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <p class="form-control-label">Ciudad</p>
+                        <select class="form-select" name="Ciudad" id="ciudad-select"></select>
+                    </div>
+                    <div>
+
+                        <input id="ubicacion-submit" type="submit" value="Guardar" class="btn btn-primary">
+                    </div>
+                </form>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        {% if not current_user.id_grupo_familiar %}
+            <section class="alert alert-danger d-flex flex-row align-items-center" >
+                <box-icon size="lg" class="mb-0 p-0" color="gray" name='group'></box-icon>
+                <div class=" ">
+
+                    <p class=" ">
+                        No tenes     <b><a  href="{{url_for('grupos_familiares.grupo_familiar')}}">Grupo Familiar</a></b>
+                    </p>
+                    <p>
+                        Crea o el tuyo o espera la invitacion de tu familiar
+                    </p>
+
+                </div>
+            </section>
+
+        {% endif %}
+
+        {% if  listas_semanales %}
+            <section class="border border-2 rounded p-3 mb-3">
+                <h3>Listas de esta semana</h3>
+                <ul>
+                    {% for lista in listas_semanales %}
+                        <li style="list-style:none;" class="mb-2">
+                            <a href = "{{url_for('listas.lista', lista_id = lista.id)}}">{{lista.descripcion}}</a>
+                            <p class="m-0 d-flex align-items-center"><box-icon color="#5f5f5f" name='calendar'></box-icon><span class="text-secondary">Fecha:</span> {{lista.fecha_creacion.strftime('%Y-%m-%d')}}</p>
+                            <div>
+                                <box-icon class="m-0" color="#5f5f5f" name='user'></box-icon><span class="text-secondary">Autor: </span>
+                                <a href="{{url_for('usuarios.perfil',usuario_email = lista.autor.email)}}" style="color:black; text-decoration:none;">
+                                    <img src="{{lista.autor.get_img_url()}}" class="sm-profile-pic">
+                                    {{lista.autor.nombre}} {{lista.autor.apellido}}
+                                </a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% else %}
+            <section class="border border-2 rounded p-3 mb-3 alert alert-primary d-flex align-items-center">
+                <box-icon size="md" color="#4e4e4e" name='list-plus' ></box-icon>
+                <div class="d-flex flex-column " >
+                    <p>No tienes listas de esta semana</p>
+                    <a href="{{url_for('listas.crear_lista')}}">Crear una lista</a>
+                </div>
+            </section>
+        {% endif %}
+        {% if ultimas_compras %}
+            <section class="border border-3 rounded p-3">
+                <h3>Ultimas compras</h3>
+                <ul class="d-flex flex-column align-items-start">
+                    {% for compra in ultimas_compras %}
+                        <a href="{{url_for('compras.compra', id_compra = compra.id)}}" class="non-decorated-link">
+                            <li style="list-style:none;" class="mb-3 border-top border-bottom compra" >
+                                <div class="d-flex flex-row align-items-center mb-1">
+                                    <box-icon color="#5f5f5f" name='calendar'></box-icon>
+                                    {{compra.fecha_compra.strftime('%d-%m-%Y')}}
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-1">
+                                    <box-icon color="#5f5f5f" name="store" ></box-icon>
+                                    {{compra.supermercado.nombre}}
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-1">
+                                    <box-icon color="#5f5f5f" name="location-plus" ></box-icon>
+                                    {{compra.supermercado.ciudad.nombre}}, {{compra.supermercado.ciudad.provincia.nombre}}
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-1">
+                                    <box-icon color="#5f5f5f" name='money'></box-icon>
+                                    ${{compra.get_total()}}
+                                </div>
+                            </li>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </section>
+        </article>
+        {% endif %}
+    {% else %}
+        <article class="h-100 w-100 container-fluid g-0">
+            <section class="seccion-home row g-0">
+                    <a href="{{url_for('usuarios.login')}}" class="col-12 col-md-6 main-link">
+                        <div class="border border-2 border-black contenedor login-contenedor pb-3">
+                            <p class="fs-3 text-white">Login</p>
+                        </div>
+                    </a>
+                    <a href="{{url_for('usuarios.register')}}" class="col-12 col-md-6 main-link">
+                       <div class="border border-2 border-black  register-contenedor contenedor align-items-end pb-3" >
+
+                           <p class="fs-3">Register
+                           </p>
+                       </div>
+
+                    </a>
+                    
+            </section>
+        </article>
+    {% endif %}
+{% endblock content %}
+
+{% block scripts %}
+
+    <script>
+        
+        let ubicacionModalBs = new bootstrap.Modal("#ubicacionModal");
+        {% if not current_user.cod_postal %}
+            window.addEventListener("DOMContentLoaded", () => { ubicacionModalBs.show()})
+        {% endif %}
+        
+    </script>
+
+    <!--Script para actualizar las ciudades -->
+    <script>
+
+        let ubicacionModal = document.getElementById("ubicacionModal");
+        ubicacionModal.addEventListener("show.bs.modal", () => {
+                
+                provinciaSelect = document.getElementById("provincia-select");
+                
+                ciudadSelect = document.getElementById('ciudad-select');
+                ubicacionForm = document.getElementById("ubicacion-form");
+                ubicacionSubmit = document.getElementById("ubicacion-submit");
+                function actualizarCiudades() {
+                    ruta_consulta = "/provincia/" + provinciaSelect.value + "/ciudades"
+                    fetch(ruta_consulta).then(response => {
+                        if (!response.ok) {
+                            alert(ruta_consulta)
+                            alert("Hubo un con la consulta, intente mas tarde");
+                        }
+                        return response.json()
+                    }).then(
+                        (data) => {
+                            for (ciu in data) {
+                                const option = document.createElement("option");
+                                option.value = data[ciu]["cod_postal"];
+                                option.textContent = data[ciu]["nombre"];
+                                {% if current_user.cod_postal %}
+                                    if (data[ciu]["cod_postal"] == {{current_user.cod_postal}}){
+                                        option.selected = true;
+                                    }    
+                                {% endif %}
+                                ciudadSelect.appendChild(option);
+
+                            }
+                        }
+                    ).catch(error => {
+                        console.error('Error en la consulta:', error);
+                        alert("Error en la consulta de ciudades");
+                            }
+
+                        )
+                    }
+                function actualizarAction(){
+                    ubicacionForm.setAttribute("action","/set_location/"+ciudadSelect.value);
+                   
+                }    
+                actualizarCiudades();    
+                provinciaSelect.addEventListener("change", () => {
+                    ciudadSelect.innerText = "";
+                    actualizarCiudades();
+                    
+                })
+                ubicacionSubmit.addEventListener("click", ()=>{
+                    actualizarAction();
+                })
+            })
+    </script>
+    
+    
+{% endblock scripts %}
+

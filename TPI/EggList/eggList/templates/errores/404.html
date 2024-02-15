@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="alert alert-danger ms-2 d-flex flex-column flex-md-row align-items-center" role="alert">
+    <img src="{{url_for('static', filename = 'errores/404.png')}}" class="error-img me-2">
+    <div>
+      <h1>Oops, no se encontró la pagina</h1>
+      <p>No se ha encontrado la pagina solicitada, por favor intente con otra pagina. <a href="{{url_for('main.home')}}">Ir al home</a></p>
+    </div>
+  </div>
+
+{% endblock %}

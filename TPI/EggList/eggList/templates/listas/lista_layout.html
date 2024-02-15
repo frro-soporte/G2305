@@ -1,0 +1,55 @@
+{% extends 'layout.html'%}
+
+
+{% block content %}
+<article>
+
+  <section class="mb-2 border-bottom">
+    {% if compra %}
+    <div class="alert alert-primary d-flex align-items-center">
+      <box-icon name='store' class="me-2"></box-icon>
+      <div>
+        <p ><b>En Supermercado</b></p>
+        <p>{{compra.supermercado.nombre}} ({{compra.supermercado.ciudad.nombre}}, {{compra.supermercado.ciudad.provincia.nombre}})</p>
+      </div>
+
+    </div>
+
+    {% endif %}
+    <div class="d-flex flex-row justify-content-between align-items-center  ">
+      <h1>Lista del <span class="text-primary">{{lista.fecha_creacion.strftime('%Y-%m-%d')}}</span></h1>
+      <a href="{{ url_for('listas.agregar_producto', lista_id = lista.id) }}" class="btn d-flex align-items-center ps-1 btn-primary ">
+        <box-icon  color="white" name='plus' ></box-icon>
+        Agregar
+      </a>
+    </div>
+    <p class="mb-2">Descripcion: {{lista.descripcion}}</p>
+
+
+
+  </section>
+</article>
+<article class="mb-4">
+
+{% block productos %}
+
+{% endblock productos %}
+</article>
+
+{% block list_map_scripts %}
+{% endblock list_map_scripts %}
+{% endblock content %}
+
+
+{% block scripts %}
+  <script>
+    setInterval("location.reload()",50000);
+  </script>
+
+  <script>
+    {{ map_script | safe}}
+  </script>
+  {% block lista_scripts %}
+
+  {% endblock lista_scripts %}
+{% endblock scripts %}

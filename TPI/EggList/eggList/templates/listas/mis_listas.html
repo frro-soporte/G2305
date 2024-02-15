@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block map_header %}
+{% endblock map_header %}
+{% block content %}
+        <div class="d-flex flex-row justify-content-between align-items-center">
+            <h1 class="mb-4">Mis listas</h1>
+            <a href="{{url_for('listas.crear_lista')}}" class="btn btn-primary">Crear</a>
+        </div>
+         {% if listas_por_semana %}
+
+            {% for semana,listas in listas_por_semana %}
+                <div class="margin-bottom mb-2">
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                        <h3>Semana del <span class="text-primary">{{semana.strftime('%Y-%m-%d')}}</span></h3>
+
+                    </div>
+                    <ul>
+
+                    </ul>
+                    <div class="card" style=>
+                      <ul class="list-group list-group-flush">
+                        {% for lista in listas %}
+                            <li class="list-group-item  d-flex flex-column align-items-center align-items-md-start justify-content-end">
+                               <h5 class="mb-0"><a href = "{{url_for('listas.lista',lista_id = lista.id)}}">{{lista.descripcion}}</a></h5>
+                                <p class="mb-0 "><span class="text-secondary">Fecha:</span> {{lista.fecha_creacion.strftime('%d-%m-%Y')}}</p>
+                                <div >
+                                    <p class="mb-0"><span class="text-secondary">Creado por:</span>
+                                        <a class="text-dark" style = "text-decoration:none;" href="{{url_for('usuarios.perfil',usuario_email = lista.autor.email)}}">
+
+                                            <img class="sm-profile-pic mb-0 " src="{{lista.autor.get_img_url()}}">
+                                            <span >{{lista.autor.nombre}} {{lista.autor.apellido}}</span>
+                                        </a>
+                                    </p>
+                                </div>
+
+                            </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+
+        {% endfor %}
+    {% else %}
+        <section class="border border-2 rounded p-3 mb-3 alert alert-primary d-flex align-items-center">
+                <box-icon size="md" color="#4e4e4e" name='list-plus' ></box-icon>
+                <div class="d-flex flex-column " >
+                    <p>No tienes listas creadas</p>
+                    <a href="{{url_for('listas.crear_lista')}}">Crear una lista</a>
+                </div>
+            </section>
+    {% endif %}
+{% endblock content %}

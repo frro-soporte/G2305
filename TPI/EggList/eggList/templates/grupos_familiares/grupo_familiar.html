@@ -1,0 +1,156 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% if current_user.tiene_grupo_familiar() %}
+        <h1 class="mb-4">Grupo Familiar</h1>
+        <div class="card p-3 mb-3">
+            <img class="card-img-top grupo-familiar-img rounded border border-2 text-secondary" src="{{current_user.grupo_familiar.get_img_url()}}" alt="Imagen grupo familiar {{current_user.grupo_familiar.nombre}}">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <box-icon size="md"  class="mb-0 p-0" color="gray" name='group'></box-icon>
+                        <h5 class="card-title d-inline">Nombre del grupo:<br><span class="text-primary">{{current_user.grupo_familiar.nombre_familia}}</span></h5>
+                    </div>
+                    {% if current_user.id == current_user.grupo_familiar.id_admin %}
+                    <abbr title="Editar Grupo">
+                        <a href="{{url_for('grupos_familiares.editar_grupo_familiar')}}" class="d-flex align-items-center " href="{{url_for('grupos_familiares.editar_grupo_familiar')}}">
+                            <box-icon name="edit-alt" animation="tada-hover" size ="md"color = "#cdb808"></box-icon>
+
+
+                        </a>
+                     </abbr>
+                    {% endif%}
+                </div>
+                <h5 class="card-text">Integrantes:</h5>
+                <ul style="list-style:none;">
+                    {% for integrante in integrantes %}
+                        <li class="mb-1 d-flex align-items-center card-text">
+                            <a href="{{url_for('usuarios.perfil',usuario_email = integrante.email)}}"><img class = "mb-1 sm-profile-pic"src="{{url_for('static', filename='profile_pics/'+integrante.imagen_perfil)}}">{{integrante.nombre}} {{integrante.apellido}}</a>
+                            {% if current_user.id == current_user.grupo_familiar.id_admin  and integrante.id != current_user.id%}
+                                <abbr title="Eliminar usuario">
+
+                                    <button type="button"  style="background:none; border:0;" data-bs-toggle="modal" data-bs-target="#eliminarIntegrante_{{integrante.email}}">
+                                      <box-icon name='trash' color="#f16464" animation="tada-hover" class="icon-eliminar-de-grupo"></box-icon>
+                                    </button>
+                                </abbr>
+                            {% endif %}
+                            {% if  integrante.id != current_user.grupo_familiar.id_admin %}
+
+                                <div class="modal fade" id="eliminarIntegrante_{{integrante.email}}" tabindex="-1" aria-labelledby="eliminarUsuario_{{integrante.email}}" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="eliminarIntegrante">Eliminar usuario de grupo</h5>
+                                      </div>
+                                      <div class="modal-body">
+                                        <p class="mb-1">Esta seguro que desea eliminar al usuario?</p>
+                                          <p class="d-flex align-items-center text-secondary">
+                                              <img class = "mb-1 sm-profile-pic"src="{{url_for('static', filename='profile_pics/'+integrante.imagen_perfil)}}">{{integrante.nombre}} {{integrante.apellido}}
+                                          </p>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                          <form method="post" action="{{url_for('grupos_familiares.eliminar_usuario_grupo',email = integrante.email)}}">
+                                              <input type="submit" class="btn btn-danger" value="Si, eliminar">
+                                          </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            {% else %}
+                                <p class="d-flex align-items-center">
+                                    👑(Admin)
+                                </p>
+                            {% endif %}
+
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if current_user.id == current_user.grupo_familiar.id_admin  and invitados%}
+                    <h5 class="card-text">Invitados:</h5>
+                    <ul style="list-style:none;">
+                     {% for invitado in invitados %}
+                        <li class="mb-1 d-flex align-items-center card-text">
+                            <a href="{{url_for('usuarios.perfil',usuario_email = invitado.email)}}"><img class = "mb-1 sm-profile-pic"src="{{url_for('static', filename='profile_pics/'+invitado.imagen_perfil)}}">{{invitado.nombre}} {{invitado.apellido}}</a>
+                            ({{invitado.email}})
+                            {% if current_user.grupo_familiar.id_admin == current_user.id %}
+                                <abbr title="Eliminar usuario">
+                                    <a href="{{url_for('grupos_familiares.eliminar_usuario_grupo',email = invitado.email)}}">
+
+                                    </a>
+                                    <button type="button"  style="background:none; border:0;" data-bs-toggle="modal" data-bs-target="#eliminarInvitado_{{invitado.email}}">
+                                      <box-icon name='trash' color="#f16464" animation="tada-hover" class="icon-eliminar-de-grupo"></box-icon>
+                                    </button>
+                                </abbr>
+                                <div class="modal fade" id="eliminarInvitado_{{invitado.email}}" tabindex="-1" aria-labelledby="eliminarUsuario_{{invitado.email}}" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="eliminarInvitado">Eliminar usuario de grupo</h5>
+                                      </div>
+                                      <div class="modal-body">
+                                        <p class="mb-1">Esta seguro que desea eliminar al usuario?</p>
+                                          <p class="d-flex align-items-center text-secondary">
+                                              <img class = "mb-1 sm-profile-pic"src="{{url_for('static', filename='profile_pics/'+invitado.imagen_perfil)}}">{{invitado.nombre}} {{invitado.apellido}}
+                                          </p>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                          <form method="post" action="{{url_for('grupos_familiares.eliminar_usuario_grupo',email = invitado.email)}}">
+                                              <input type="submit" class="btn btn-danger" value="Si, eliminar">
+                                          </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                            {% endif %}
+                        </li>
+
+                    {% endfor %}
+                </ul>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+        {% if current_user.id == current_user.grupo_familiar.id_admin %}
+        <div class="border rounded p-3">
+            <form method="POST" action="{{url_for('grupos_familiares.invitar_usuario')}}">
+                  {{ form.hidden_tag() }}
+                  <legend>Agregar integrante</legend>
+                  <div class="mb-3">
+                    {{ form.email_usuario.label(class="form-label")}}
+                    {% if form.email_usuario.errors %}
+                        {{ form.email_usuario(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email_usuario.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.email_usuario(class="form-control form-control-lg") }}
+                    {% endif %}
+                  </div>
+                    {{form.submit(class="btn btn-primary")}}
+            </form>
+        </div>
+        {% endif %}
+    {% elif current_user.id_grupo_familiar %}
+        <div class="alert alert-warning" role="alert">
+        <p><strong>Tenes una invitacion de un grupo familiar</strong></p>
+        <p>Revise su correo registrado para confirmar o rechazar su invitacion</p>
+
+      </div>
+    {% else %}
+      <div class="alert alert-primary" role="alert">
+        <p><strong>Vemos que no tenes ningun grupo familiar</strong></p>
+        <p>Tenes 2 formas acceder a uno</p>
+        <ul>
+          <li><a href="{{url_for('grupos_familiares.crear_grupo_familiar')}}">Crear un grupo familiar</a></li>
+          <li>Que alguien me invite al suyo</li>
+        </ul>
+      </div>
+
+    {% endif %}
+
+{% endblock content %}

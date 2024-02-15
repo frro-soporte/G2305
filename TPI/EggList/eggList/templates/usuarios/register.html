@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+{% block content %}
+<form method="POST" action="" class="container">
+    {{ form.hidden_tag() }}
+  <div class="mb-3">
+    {{ form.nombre.label(class="form-label")}}
+    {% if form.nombre.errors %}
+        {{ form.nombre(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+            {% for error in form.nombre.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% else %}
+        {{ form.nombre(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+  <div class="mb-3">
+    {{ form.apellido.label(class="form-label")}}
+    {% if form.apellido.errors %}
+        {{ form.apellido(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+            {% for error in form.apellido.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% else %}
+        {{ form.apellido(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+  <div class="mb-3">
+    {{ form.email.label(class="form-label")}}
+    {% if form.email.errors %}
+        {{ form.email(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+            {% for error in form.email.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% else %}
+        {{ form.email(class="form-control form-control-lg") }}
+    {% endif %}
+
+  </div>
+  <div class="mb-3">
+    {{ form.telefono.label(class="form-label")}}
+    {% if form.telefono.errors %}
+        {{ form.telefono(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+            {% for error in form.telefono.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% else %}
+        {{ form.telefono(class="form-control form-control-lg") }}
+        <span class="form-text">Ingrese [Num. de area sin 0] [telefono sin 15]</span>
+    {% endif %}
+  </div>
+  <div class="mb-3">
+    {{ form.password.label(class="form-label")}}
+    {% if form.password.errors %}
+        {{ form.password(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+            {% for error in form.password.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% else %}
+        {{ form.password(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+  <div class="mb-3">
+    {{ form.confirm_password.label(class="form-label")}}
+    {% if form.confirm_password.errors %}
+        {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+            {% for error in form.confirm_password.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% else %}
+        {{ form.confirm_password(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+
+
+
+  {{form.submit(class="btn btn-primary")}}
+
+
+</form>
+<script>
+
+    provincia_select = document.getElementById("provincia-select")
+    provincia_select.addEventListener("click", console.log("Se cambio el valor de su prosds"))
+    ciudad_select = document.getElementById('ciudad-select');
+    ciudad_select.addEventListener("click", console.log("hiciste un click en el select"))
+    ciudad_select.innerHtml = "<option>Sucutrutuc</option>"
+</script>
+{% endblock content %}

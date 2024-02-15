@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form method="POST" action="">
+   {{form.hidden_tag()}}
+  <div class="d-flex flex-row justify-content-between align-items-center mb-3">
+    <legend>Agregar Producto</legend>
+    <a class="btn btn-outline-danger" href="{{ url_for('listas.lista', lista_id = lista_id) }}">Cancelar</a>
+  </div>
+  <div class="mb-3">
+    {{form.descripcion.label(class="form-label")}}
+    {{form.descripcion(class="form-control")}}
+
+  </div>
+  <div class="mb-3">
+    {{form.cantidad.label(class="form-label")}}
+    {{form.cantidad(class="form-control")}}
+    <p class="form-text">Si no sabe la cantidad, ingrese 0</p>
+  </div>
+
+  {{form.submit(class='btn btn-primary')}}
+</form>
+{% endblock content %}

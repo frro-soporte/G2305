@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+{% block content %}
+<form method="POST"  enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+    <legend>
+    {{titulo}}
+    </legend>
+  <div class="mb-3">
+    {{ form.familia.label(class="form-label")}}
+    {% if form.familia.errors %}
+        {{ form.familia(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+            {% for error in form.familia.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% else %}
+        {{ form.familia(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+  <div class="mb-3">
+    {{ form.imagen.label(class="form-label")}}
+    {% if form.imagen.errors %}
+        {{ form.imagen(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+            {% for error in form.imagen.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% else %}
+        {{ form.imagen(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+
+
+  {{form.submit(class="btn btn-primary")}}
+
+
+</form>
+
+{% endblock content %}

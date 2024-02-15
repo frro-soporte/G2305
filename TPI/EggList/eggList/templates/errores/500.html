@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="alert alert-danger ms-2 d-flex flex-column flex-md-row align-items-center" role="alert">
+    <img src="{{url_for('static', filename = 'errores/500.png')}}" class="error-img me-2">
+    <div>
+      <h1>Oops, hubo un error en el servidor</h1>
+      <p>Espere y vuelva a intentarlo dentro de un rato</p>
+    </div>
+  </div>
+
+{% endblock %}

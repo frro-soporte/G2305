@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block content %}
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+
+  <div class="mb-3">
+    {{ form.email.label(class="form-label")}}
+    {{ form.email(class="form-control")}}
+  </div>
+  <div class="mb-3">
+    {{ form.password.label(class="form-label")}}
+    {{ form.password(class="form-control")}}
+  </div>
+  <div class="mb-3 form-check">
+    {{form.remember(class="form-check-input")}}
+    {{form.remember.label(class="form-check-label" )}}
+  </div>
+  {{form.submit(class="btn btn-primary")}}
+
+
+</form>
+
+{% endblock content %}

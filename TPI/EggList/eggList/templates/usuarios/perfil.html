@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <article class="h-100 r">
+        <section class="perfil mb-3 border rounded border-3 border-success p-3 container-fluid d-flex flex-column ">
+            {% if usuario == current_user %}
+                <div class="mb-2 align-self-end d-flex justify-content-center">
+                    <a href="{{url_for('usuarios.actualizar',usuario_email=usuario.email)}}" class=" m-auto btn btn-primary">Editar</a>
+                </div>
+                {% endif %}
+            <div class="pb-1 mb-3 d-flex flex-column flex-md-row  justify-content-between border-bottom border-secondary">
+                <div class="d-flex flex-column align-items-center flex-md-row ">
+                    <img src="{{usuario.get_img_url()}}" class="profile-pic">
+                    <h3 class="m-0 mt-auto">{{usuario.nombre}} {{usuario.apellido}}</h3>
+                </div>
+                <p class="text-center text-md-start">Actualmente en <b><span class="text-secondary">{{usuario.ciudad.nombre}}, {{usuario.ciudad.provincia.nombre}}</span></b></p>
+            </div>
+
+            <h6 class="text-center text-md-start">Contacto</h6>
+            <div class="w-100 d-flex flex-row justify-content-between justify-content-md-start">
+                <a href="mailto:{{usuario.email}}" class="text-success"><box-icon animation="tada-hover"  name='envelope' size="lg"></box-icon></a>
+                <a href="https://api.whatsapp.com/send?phone=549{{usuario.telefono}}"><box-icon color="green" animation="tada-hover"  name='whatsapp' type="logo" size="lg"></box-icon></a>
+                <a href="tel:{{usuario.telefono}}"><box-icon color="blue" animation="tada-hover"  name="phone" type="solid" size="lg"></box-icon></a>
+            </div>
+
+
+        </section>
+
+    </article>
+
+{% endblock content %}

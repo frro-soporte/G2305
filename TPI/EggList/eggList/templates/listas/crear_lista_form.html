@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form method="POST" action="">
+  {{ form.hidden_tag() }}
+  <div class="d-flex flex-row align-items-center justify-content-between">
+      <legend>Crear lista</legend>
+      <a href = "{{url_for('listas.mis_listas')}}" class="btn btn-danger">Cancelar</a>
+  </div>
+  <div class="mb-3">
+    {{ form.descripcion.label(class="form-label")}}
+
+    {% if form.descripcion.errors %}
+        {{ form.descripcion(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+            {% for error in form.descripcion.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% else %}
+        {{ form.descripcion(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+  {% if current_user.grupo_familiar %}
+   <div class="mb-3">
+    {{ form.incluye_grupo_familiar(class="form-check-input") }}
+    {{ form.incluye_grupo_familiar.label(class="form-check-label")}}
+
+  </div>
+  {% endif %}
+
+
+  {{form.submit(class="btn btn-primary")}}
+
+
+</form>
+
+{% endblock content %}

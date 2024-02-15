@@ -1,0 +1,104 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Actualizar perfil</h1>
+        <a href="{{url_for('usuarios.perfil', usuario_email = current_user.email)}}" class="m-0 btn btn-danger">Cancelar</a>
+    </div>
+    <form class="container mb-3 border rounded border-3 border-success p-3  " method="POST" action="" enctype="multipart/form-data">
+        {{form.hidden_tag()}}
+        <div class="row mb-2">
+            <legend class="col m-0">Mi perfil</legend>
+        </div>
+        <div class="  pb-3 container-fluid justify-content-center justify-content-md-start border-bottom border-secondary">
+            <div class="row   justify-content-center justify-content-md-start">
+                <div class=" col-12 col-md-2 px-0 d-flex flex-column justify-content-center align-items-center
+                                flex-md-row align-items-md-end">
+                    <img  src="{{usuario.get_img_url()}}" class="mb-1  me-md-2 text-center profile-pic imagen">
+                    <div>
+                        {{form.imagen_perfil.label(class="form-control-label")}}
+                        {% if form.imagen_perfil.errors %}
+                            {{form.imagen_perfil(class="form-control-file  is-invalid input-imagen" )}}
+                            <div >
+                                {% for error in form.imagen_perfil.errors%}
+                                    <p class="form-text text-danger">{{error}}</p>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{form.imagen_perfil(class="form-control input-imagen" )}}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-md-2 d-flex flex-column justify-content-end">
+                    {{form.nombre.label(class=" mb-1 form-control-label")}}
+                    {% if form.nombre.errors %}
+                            {{form.nombre(class="form-control  is-invalid" )}}
+                            <div >
+                                {% for error in form.nombre.errors%}
+                                    <p class="form-text text-danger">{{error}}</p>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{form.nombre(class="form-control" )}}
+                        {% endif %}
+                </div>
+                <div class="col-12 col-md-2 d-flex flex-column justify-content-end">
+                    {{form.apellido.label(class="mb-1 form-control-label")}}
+                    {% if form.apellido.errors %}
+                            {{form.apellido(class="form-control  is-invalid" )}}
+                            <div >
+                                {% for error in form.apellido.errors%}
+                                    <p class="form-text text-danger">{{error}}</p>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{form.apellido(class="form-control" )}}
+                        {% endif %}
+                </div>
+            </div>
+
+        </div>
+        <div class="row mb-2 mt-2">
+            <h5 class="col m-0">Actualizar Contacto</h5>
+        </div>
+        <div class="row mb-3">
+             <div class="col-12 col-md-2">
+                {{form.email.label(class="mb-1 form-control-label")}}
+                {% if form.email.errors %}
+                            {{form.email(class="form-control  is-invalid" )}}
+                            <div >
+                                {% for error in form.email.errors%}
+                                    <p class="form-text text-danger">{{error}}</p>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{form.email(class="form-control" )}}
+                        {% endif %}
+             </div>
+            <div class="col-12 col-md-2">
+                {{form.telefono.label(class="mb-1 form-control-label")}}
+                {% if form.telefono.errors %}
+                            {{form.telefono(class="form-control  is-invalid" )}}
+                            <div >
+                                {% for error in form.telefono.errors%}
+                                    <p class="form-text text-danger">{{error}}</p>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{form.telefono(class="form-control" )}}
+                        {% endif %}
+            </div>
+        </div>
+        <div class="row w-auto">
+            {{form.submit(class="btn btn-primary col col-md-auto mx-2")}}
+        </div>
+
+
+    </form>
+
+    
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="{{url_for('static', filename='scripts/actualizar_imagen.js')}}"></script>
+{% endblock scripts %}

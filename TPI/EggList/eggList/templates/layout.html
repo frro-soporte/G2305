@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      {% block map_header %}
+      {% endblock map_header %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        {% if title %}
+            EggList- {{title}}
+        {% else %}
+            EggList
+        {% endif %}
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename = 'style.css')}}">
+    <link rel="icon" href = "{{url_for('static', filename='logo.png')}}">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  </head>
+  <body>
+    <nav class=" navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container ">
+        <a class="navbar-brand" href="{{url_for('main.home')}}">
+            <img class="logo" src="{{url_for('static', filename='logo.png')}}">
+            EggList
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse text-center w-100" id="navbarNav">
+        {% if current_user.is_authenticated %}
+          <ul class="navbar-nav w-100">
+
+            <li class="nav-item">
+              <a class="nav-link d-flex flex-row align-items-center" aria-current="page" href="{{ url_for('listas.mis_listas') }}">
+                  <box-icon name='list-check' ></box-icon>
+                  Mis listas
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex flex-row align-items-center" href="{{url_for('grupos_familiares.grupo_familiar')}}">
+                  <box-icon  name='group'></box-icon>
+                  Grupo Familiar
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex flex-row align-items-center" href="{{url_for('compras.mis_compras')}}">
+                  <box-icon name='shopping-bag'></box-icon>
+                  Compras
+              </a>
+            </li>
+
+          </ul>
+          <ul class="navbar-nav w-100 d-flex flex-column flex-md-row align-items-start align-items-md-end justify-content-md-end">
+                    <li class="nav-item ">
+                        <a class="nav-link d-flex flex-row align-items-center " aria-current="page" href="{{url_for('usuarios.perfil',usuario_email = current_user.email)}}">
+                            <img src="{{current_user.get_img_url()}}" class="sm-profile-pic me-1">
+                            {{current_user.nombre}} {{current_user.apellido}}
+                        </a>
+
+                    </li>
+                    <li class="nav-item ">
+                      <a class="nav-link d-flex flex-row align-items-center" aria-current="page" href="{{url_for('usuarios.logout')}}">
+                        <box-icon name='log-out' type='solid' ></box-icon>
+                        Logout
+                      </a>
+                    </li>
+
+          </ul>
+          {% else %}
+              <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                  <a class="nav-link d-flex flex-row align-items-center" aria-current="page" href="{{url_for('usuarios.login')}}">
+                      <box-icon name='log-in' type="solid"  ></box-icon>
+                      Login
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link d-flex flex-row align-items-center" href="{{url_for('usuarios.register')}}">
+                      <box-icon name='notepad' type="solid"></box-icon>
+                      Register
+                  </a>
+                </li>
+              </ul>
+
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+    <main class="container  py-2">
+        <div >
+            {% with messages = get_flashed_messages(with_categories = True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+        </div>
+
+        {% block content %}
+
+
+        {% endblock content %}
+
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="{{url_for('static',filename='main.js')}}"></script>
+    <script>
+        {{map_script | safe}}
+    </script>
+    {% block scripts %}
+    {% endblock scripts %}
+
+  </body>
+</html>
